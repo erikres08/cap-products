@@ -1,5 +1,17 @@
 namespace com.logali;
 
+// Definir tipo personalizado (No recomentado)
+type Name : String(50);
+
+// Tipo Estructurado
+type Address {
+    Street     : String;
+    City       : String;
+    State      : String(2);
+    PostalCode : String(5);
+    Country    : String(3);
+};
+
 entity Products {
     key ID               : UUID;
         Name             : String;
@@ -21,18 +33,40 @@ entity Products {
 };
 
 entity Suppliers {
-    key ID         : UUID;
-        Name       : String;
-        Street     : String;
-        City       : String;
-        State      : String(2);
-        PostalCode : String(5);
-        Country    : String(3);
-        Email      : String;
-        Phone      : String;
-        Fax        : String;
-
+    key ID      : UUID;
+        Name    : String;
+        Address : Address;
+        Email   : String;
+        Phone   : String;
+        Fax     : String;
 };
+
+
+// Uso del tipo estructurado
+/*entity Suppliers_01 {
+    key ID      : UUID;
+        Name    : String;
+        Address : Address;
+        Email   : String;
+        Phone   : String;
+        Fax     : String;
+};
+
+// Definición tipo estructurado dentro del Entity
+entity Suppliers_02 {
+    key ID      : UUID;
+        Name    : String;
+        Address : {
+            Street     : String;
+            City       : String;
+            State      : String(2);
+            PostalCode : String(5);
+            Country    : String(3);
+        };
+        Email   : String;
+        Phone   : String;
+        Fax     : String;
+};*/
 
 entity Categories {
     key ID   : String(1);
