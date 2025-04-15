@@ -1,7 +1,7 @@
 namespace com.logali;
 
 // Definir tipo personalizado (No recomentado)
-type Name : String(50);
+type Name              : String(50);
 
 // Tipo Estructurado
 type Address {
@@ -11,6 +11,26 @@ type Address {
     PostalCode : String(5);
     Country    : String(3);
 };
+
+// Tipo Matriz
+// type EmailAddresses_01 : array of {
+//     kind  : String;
+//     email : String;
+// };
+
+// type EmailAddresses_02 {
+//     kind  : String;
+//     email : String;
+// };
+
+// entity Emails {
+//     email_01 :      EmailAddresses_01;
+//     email_02 : many EmailAddresses_02;
+//     email_03 : many {
+//         kind  : String;
+//         email : String;
+//     }
+// };
 
 entity Products {
     key ID               : UUID;
@@ -43,30 +63,30 @@ entity Suppliers {
 
 
 // Uso del tipo estructurado
-/*entity Suppliers_01 {
-    key ID      : UUID;
-        Name    : String;
-        Address : Address;
-        Email   : String;
-        Phone   : String;
-        Fax     : String;
-};
+// entity Suppliers_01 {
+//     key ID      : UUID;
+//         Name    : String;
+//         Address : Address;
+//         Email   : String;
+//         Phone   : String;
+//         Fax     : String;
+// };
 
-// Definición tipo estructurado dentro del Entity
-entity Suppliers_02 {
-    key ID      : UUID;
-        Name    : String;
-        Address : {
-            Street     : String;
-            City       : String;
-            State      : String(2);
-            PostalCode : String(5);
-            Country    : String(3);
-        };
-        Email   : String;
-        Phone   : String;
-        Fax     : String;
-};*/
+// // Definición tipo estructurado dentro del Entity
+// entity Suppliers_02 {
+//     key ID      : UUID;
+//         Name    : String;
+//         Address : {
+//             Street     : String;
+//             City       : String;
+//             State      : String(2);
+//             PostalCode : String(5);
+//             Country    : String(3);
+//         };
+//         Email   : String;
+//         Phone   : String;
+//         Fax     : String;
+// };
 
 entity Categories {
     key ID   : String(1);
