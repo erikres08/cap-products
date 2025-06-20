@@ -1,7 +1,10 @@
 namespace com.logali;
-// Test
+
 // Definir tipo personalizado (No recomentado)
 type Name              : String(50);
+
+//Tipos por referencia
+type  Dec : Decimal(16, 2); 
 
 // Tipo Estructurado
 type Address {
@@ -32,6 +35,27 @@ type Address {
 //     }
 // };
 
+// // Enumeraciones
+// type  Gender: String  enum{
+//     male;
+//     female;
+// };
+
+// entity Order{
+//     clientGender : Gender;
+//     status: Integer enum{
+//         submitted = 1;
+//         fulfiller = 2;
+//         shopped = 3;
+//         cancel = -1;
+//     };
+//     priority: String @assert.range enum{
+//         high;
+//         medium;
+//         low;
+//     }
+// }
+
 entity Products {
     key ID               : UUID;
         Name             : String;
@@ -39,8 +63,8 @@ entity Products {
         ImageUrl         : String;
         ReleaseDate      : DateTime;
         DiscontinuedDate : DateTime;
-        Price            : Decimal(16, 2);
-        Height           : Decimal(16, 2);
+        Price            : Dec;
+        Height           : type of Price; //Tipos por referencia
         Width            : Decimal(16, 2);
         Depth            : Decimal(16, 2);
         Quantity         : Decimal(16, 2);
@@ -54,7 +78,7 @@ entity Products {
 
 entity Suppliers {
     key ID      : UUID;
-        Name    : String;
+        Name    : Products:Name; //Tipos por referencia 
         Address : Address;
         Email   : String;
         Phone   : String;
