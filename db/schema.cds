@@ -1,5 +1,5 @@
 namespace com.logali;
-
+// Test
 // Definir tipo personalizado (No recomentado)
 type Name              : String(50);
 
