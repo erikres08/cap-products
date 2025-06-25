@@ -1,12 +1,11 @@
 namespace com.logali;
 
 // Definir tipo personalizado (No recomentado)
-type Name              : String(50);
+type Name : String(50);
+// TIPOS POR REFERENCIA
+type Dec  : Decimal(16, 2);
 
-//Tipos por referencia
-type  Dec : Decimal(16, 2); 
-
-// Tipo Estructurado
+// TIPO ESTRUCTURADO
 type Address {
     Street     : String;
     City       : String;
@@ -15,7 +14,7 @@ type Address {
     Country    : String(3);
 };
 
-// Tipo Matriz
+// TIPO MATRIZ
 // type EmailAddresses_01 : array of {
 //     kind  : String;
 //     email : String;
@@ -35,7 +34,7 @@ type Address {
 //     }
 // };
 
-// // Enumeraciones
+// // ENUMERACIONES
 // type  Gender: String  enum{
 //     male;
 //     female;
@@ -56,15 +55,26 @@ type Address {
 //     }
 // }
 
+
+/*entity Car {
+    key     ID         : UUID;
+            name       : String;
+    virtual discount_1 : Decimal; // VIRTUAL -- SOLO RETORNA EL VALOR NO SE GUARDA EN BD
+
+            @Core.Computed: false
+    virtual discount_2 : Decimal;
+}*/
+
 entity Products {
     key ID               : UUID;
-        Name             : String;
+        Name             : String not null; // RESTRICCIONES
         Description      : String;
         ImageUrl         : String;
-        ReleaseDate      : DateTime;
+        ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
+        // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
         DiscontinuedDate : DateTime;
         Price            : Dec;
-        Height           : type of Price; //Tipos por referencia
+        Height           : type of Price; // TIPOS POR REFERENCIA
         Width            : Decimal(16, 2);
         Depth            : Decimal(16, 2);
         Quantity         : Decimal(16, 2);
@@ -78,7 +88,7 @@ entity Products {
 
 entity Suppliers {
     key ID      : UUID;
-        Name    : Products:Name; //Tipos por referencia 
+        Name    : Products : Name; // TIPOS POR REFERENCIA
         Address : Address;
         Email   : String;
         Phone   : String;
@@ -86,7 +96,7 @@ entity Suppliers {
 };
 
 
-// Uso del tipo estructurado
+// USO TIPO ESTRUCTURADO
 // entity Suppliers_01 {
 //     key ID      : UUID;
 //         Name    : String;
@@ -96,7 +106,7 @@ entity Suppliers {
 //         Fax     : String;
 // };
 
-// // Definición tipo estructurado dentro del Entity
+// // DEFINICIÓN TIPO ESTRUCTURADO DENTRO DEL ENTITY
 // entity Suppliers_02 {
 //     key ID      : UUID;
 //         Name    : String;
