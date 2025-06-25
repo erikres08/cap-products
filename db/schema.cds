@@ -14,6 +14,7 @@ type Address {
     Country    : String(3);
 };
 
+
 // TIPO MATRIZ
 // type EmailAddresses_01 : array of {
 //     kind  : String;
@@ -78,11 +79,16 @@ entity Products {
         Width            : Decimal(16, 2);
         Depth            : Decimal(16, 2);
         Quantity         : Decimal(16, 2);
-        UnitOfMeasure_Id : String(2);
-        Currency_Id      : String(3);
-        Category_Id      : String(1);
+        //Currency_Id      : String(3);
+        //Category_Id      : String(1);
+        //DimensionUnit_Id : String(2);
         Supplier_Id      : UUID;
-        DimensionUnit_Id : String(2);
+        ToSupplier       : Association to one Suppliers
+                               on ToSupplier.ID = Supplier_Id; // ASOCIACIÓN NO ADMIN
+        UnitOfMeasure_Id : String(2);
+        ToUnitOfMeasure  : Association to UnitOfMeasures
+                               on ToUnitOfMeasure.ID = UnitOfMeasure_Id;    // ASOCIACIÓN NO ADMIN
+
 
 };
 
@@ -169,4 +175,77 @@ entity SalesData {
         Product_Id       : UUID;
         Currency_Id      : String(3);
         DeliveryMonth_Id : String(2);
-}
+};
+
+// ENTIDAD SELECT
+entity SelProducts   as select from Products;
+
+entity SelProducts1  as
+    select from Products {
+        *
+    };
+
+entity SelProducts2  as
+    select from Products {
+        Name,
+        Price,
+        Quantity
+    };
+
+entity SelProducts3  as
+    select from Products
+    left join ProductReview
+        on Products.Name = ProductReview.Name
+    {
+        Rating,
+        Products.Name,
+        sum(Price) as TotalPrice
+    }
+    group by
+        Rating,
+        Products.Name
+    order by
+        Rating;
+
+// ENTIDAD PROJECTION
+entity ProjProducts  as projection on Products;
+
+entity ProjProducts2 as
+    projection on Products {
+        *
+    };
+
+entity ProjProducts3 as
+    projection on Products {
+        ReleaseDate,
+        Name
+    };
+
+// ENTIDADES CON PARÁMETROS
+/*entity ParamProducts(pName : String)     as
+    select
+        Name,
+        Price,
+        Quantity
+    from Products
+    where
+        Name = :pName;
+// Opción 2
+entity ParamProducts2(pName : String) as
+    select from Products {
+        Name,
+        Price,
+        Quantity
+    }
+    where
+        Name = :pName;
+
+entity ProjParamProducts(pName : String) as projection on Products
+                                            where
+                                                Name = :pName;*/
+
+// ENTIDADES AMPLIACIÓN
+extend Products with {
+    PriceCondition     : String(2);
+    PriceDetermination : String(3);
+};
