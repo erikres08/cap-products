@@ -14,7 +14,6 @@ type Address {
     Country    : String(3);
 };
 
-
 // TIPO MATRIZ
 // type EmailAddresses_01 : array of {
 //     kind  : String;
@@ -66,42 +65,6 @@ type Address {
     virtual discount_2 : Decimal;
 }*/
 
-entity Products {
-    key ID               : UUID;
-        Name             : String not null; // RESTRICCIONES
-        Description      : String;
-        ImageUrl         : String;
-        ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
-        // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
-        DiscontinuedDate : DateTime;
-        Price            : Dec;
-        Height           : type of Price; // TIPOS POR REFERENCIA
-        Width            : Decimal(16, 2);
-        Depth            : Decimal(16, 2);
-        Quantity         : Decimal(16, 2);
-        //Currency_Id      : String(3);
-        //Category_Id      : String(1);
-        //DimensionUnit_Id : String(2);
-        Supplier_Id      : UUID;
-        ToSupplier       : Association to one Suppliers
-                               on ToSupplier.ID = Supplier_Id; // ASOCIACIÓN NO ADMIN
-        UnitOfMeasure_Id : String(2);
-        ToUnitOfMeasure  : Association to UnitOfMeasures
-                               on ToUnitOfMeasure.ID = UnitOfMeasure_Id;    // ASOCIACIÓN NO ADMIN
-
-
-};
-
-entity Suppliers {
-    key ID      : UUID;
-        Name    : Products : Name; // TIPOS POR REFERENCIA
-        Address : Address;
-        Email   : String;
-        Phone   : String;
-        Fax     : String;
-};
-
-
 // USO TIPO ESTRUCTURADO
 // entity Suppliers_01 {
 //     key ID      : UUID;
@@ -127,6 +90,62 @@ entity Suppliers {
 //         Phone   : String;
 //         Fax     : String;
 // };
+
+entity Products {
+    key ID               : UUID;
+        Name             : String not null; // RESTRICCIONES
+        Description      : String;
+        ImageUrl         : String;
+        ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
+        // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
+        DiscontinuedDate : DateTime;
+        Price            : Dec;
+        Height           : type of Price; // TIPOS POR REFERENCIA
+        Width            : Decimal(16, 2);
+        Depth            : Decimal(16, 2);
+        Quantity         : Decimal(16, 2);
+        UnitOfMeasure_Id : String(2);
+        Currency_Id      : String(3);
+        Category_Id      : String(1);
+        Supplier_Id      : UUID;
+        DimensionUnit_Id : String(2);
+        ToSupplier       : Association to one Suppliers
+                               on ToSupplier.ID = Supplier_Id; // ASOCIACIÓN NO ADMIN
+
+        ToUnitOfMeasure  : Association to UnitOfMeasures
+                               on ToUnitOfMeasure.ID = UnitOfMeasure_Id; // ASOCIACIÓN NO ADMIN
+
+        ToCurrency       : Association to Currencies
+                               on ToCurrency.ID = Currency_Id;
+
+        ToDimensionUnit  : Association to DimensionUnits
+                               on ToDimensionUnit.ID = DimensionUnit_Id;
+
+        ToCategory       : Association to Categories
+                               on ToCategory.ID = Category_Id;
+
+        SalesData        : Association to many SalesData
+                               on SalesData.ToProduct = $self; // ASOCIACIÓN MANY
+
+        Reviews          : Association to many ProductReview
+                               on Reviews.ToProduct = $self;
+//Suppliers        : Association to Suppliers;            // ASOCIACIÓN ADMIN
+//UnitOfMeasures   : Association to UnitOfMeasures;       // ASOCIACIÓN ADMIN
+//Currency         : Association to Currencies;           // ASOCIACIÓN ADMIN
+//DimensionUnit    : Association to DimensionUnits;       // ASOCIACIÓN ADMIN
+//Category         : Association to Categories;           // ASOCIACIÓN ADMIN
+};
+
+entity Suppliers {
+    key ID      : UUID;
+        Name    : Products : Name; // TIPOS POR REFERENCIA
+        Address : Address;
+        Email   : String;
+        Phone   : String;
+        Fax     : String;
+        Product : Association to many Products
+                      on Product.ToSupplier = $self;
+};
 
 entity Categories {
     key ID   : String(1);
@@ -160,12 +179,14 @@ entity Months {
 };
 
 entity ProductReview {
-    key ID         : String;
+    key ID         : UUID;
         Product_Id : UUID;
         CreatedAt  : DateTime;
         Name       : String;
         Rating     : Integer;
         Comment    : String;
+        ToProduct  : Association to Products
+                         on ToProduct.ID = Product_Id;
 };
 
 entity SalesData {
@@ -175,6 +196,33 @@ entity SalesData {
         Product_Id       : UUID;
         Currency_Id      : String(3);
         DeliveryMonth_Id : String(2);
+        ToProduct        : Association to Products
+                               on ToProduct.ID = Product_Id;
+        ToCurrency       : Association to Currencies
+                               on ToCurrency.ID = Currency_Id;
+        ToDeliveryMonth_ : Association to Months
+                               on ToDeliveryMonth_.ID = DeliveryMonth_Id;
+};
+
+entity Orders {
+    key ID       : UUID;
+        Date     : Date;
+        Customer : String;
+        Item     : Composition of many OrdersItems
+                        on Item.Order = $self;
+        // Item     : Composition of many {
+        //                key Position : Integer;
+        //                    Order    : Association to Orders;
+        //                    Product  : Association to Products;
+        //                    Quantity : Integer;
+        //            }
+};
+
+entity OrdersItems {
+    key ID       : UUID;
+        Order    : Association to Orders;
+        Product  : Association to Products;
+        Quantity : Integer;
 };
 
 // ENTIDAD SELECT
@@ -221,6 +269,11 @@ entity ProjProducts3 as
         Name
     };
 
+// ENTIDADES AMPLIACIÓN
+extend Products with {
+    PriceCondition     : String(2);
+    PriceDetermination : String(3);
+};
 // ENTIDADES CON PARÁMETROS
 /*entity ParamProducts(pName : String)     as
     select
@@ -244,8 +297,21 @@ entity ProjParamProducts(pName : String) as projection on Products
                                             where
                                                 Name = :pName;*/
 
-// ENTIDADES AMPLIACIÓN
-extend Products with {
-    PriceCondition     : String(2);
-    PriceDetermination : String(3);
+// ASOCIACIÓN MANY TO MANY
+/*entity Course {
+    key ID      : UUID;
+        Student : Association to many StudentCourse
+                      on Student.Course = $self;
 };
+
+entity Student {
+    key ID     : UUID;
+        Course : Association to many StudentCourse
+                     on Course.Student = $self;
+};
+
+entity StudentCourse {
+    key ID      : UUID;
+        Student : Association to Student;
+        Course  : Association to Course;
+};*/

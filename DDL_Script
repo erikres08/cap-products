@@ -11,11 +11,11 @@ CREATE TABLE com_logali_Products (
   Width DECIMAL(16, 2),
   Depth DECIMAL(16, 2),
   Quantity DECIMAL(16, 2),
-  Supplier_Id NVARCHAR(36),
+  UnitOfMeasure_Id NVARCHAR(2),
   Currency_Id NVARCHAR(3),
   Category_Id NVARCHAR(1),
+  Supplier_Id NVARCHAR(36),
   DimensionUnit_Id NVARCHAR(2),
-  UnitOfMeasure_Id NVARCHAR(2),
   PriceCondition NVARCHAR(2),
   PriceDetermination NVARCHAR(3),
   PRIMARY KEY(ID)
@@ -73,7 +73,7 @@ CREATE TABLE com_logali_Months (
 );
 
 CREATE TABLE com_logali_ProductReview (
-  ID NVARCHAR(255) NOT NULL,
+  ID NVARCHAR(36) NOT NULL,
   Product_Id NVARCHAR(36),
   CreatedAt DATETIME_TEXT,
   Name NVARCHAR(255),
@@ -104,11 +104,11 @@ CREATE VIEW com_logali_SelProducts AS SELECT
   Products_0.Width,
   Products_0.Depth,
   Products_0.Quantity,
-  Products_0.Supplier_Id,
+  Products_0.UnitOfMeasure_Id,
   Products_0.Currency_Id,
   Products_0.Category_Id,
+  Products_0.Supplier_Id,
   Products_0.DimensionUnit_Id,
-  Products_0.UnitOfMeasure_Id,
   Products_0.PriceCondition,
   Products_0.PriceDetermination
 FROM com_logali_Products AS Products_0;
@@ -125,11 +125,11 @@ CREATE VIEW com_logali_SelProducts1 AS SELECT
   Products_0.Width,
   Products_0.Depth,
   Products_0.Quantity,
-  Products_0.Supplier_Id,
+  Products_0.UnitOfMeasure_Id,
   Products_0.Currency_Id,
   Products_0.Category_Id,
+  Products_0.Supplier_Id,
   Products_0.DimensionUnit_Id,
-  Products_0.UnitOfMeasure_Id,
   Products_0.PriceCondition,
   Products_0.PriceDetermination
 FROM com_logali_Products AS Products_0;
@@ -160,11 +160,11 @@ CREATE VIEW com_logali_ProjProducts AS SELECT
   Products_0.Width,
   Products_0.Depth,
   Products_0.Quantity,
-  Products_0.Supplier_Id,
+  Products_0.UnitOfMeasure_Id,
   Products_0.Currency_Id,
   Products_0.Category_Id,
+  Products_0.Supplier_Id,
   Products_0.DimensionUnit_Id,
-  Products_0.UnitOfMeasure_Id,
   Products_0.PriceCondition,
   Products_0.PriceDetermination
 FROM com_logali_Products AS Products_0;
@@ -181,11 +181,11 @@ CREATE VIEW com_logali_ProjProducts2 AS SELECT
   Products_0.Width,
   Products_0.Depth,
   Products_0.Quantity,
-  Products_0.Supplier_Id,
+  Products_0.UnitOfMeasure_Id,
   Products_0.Currency_Id,
   Products_0.Category_Id,
+  Products_0.Supplier_Id,
   Products_0.DimensionUnit_Id,
-  Products_0.UnitOfMeasure_Id,
   Products_0.PriceCondition,
   Products_0.PriceDetermination
 FROM com_logali_Products AS Products_0;
