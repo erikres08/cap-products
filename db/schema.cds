@@ -6,6 +6,7 @@ type Name : String(50);
 type Dec  : Decimal(16, 2);
 
 // TIPO ESTRUCTURADO
+// TEst GIT HUB
 type Address {
     Street     : String;
     City       : String;
