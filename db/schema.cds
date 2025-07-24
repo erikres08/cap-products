@@ -1,12 +1,13 @@
 namespace com.logali;
 
+using {cuid} from '@sap/cds/common';
+
 // Definir tipo personalizado (No recomentado)
 type Name : String(50);
 // TIPOS POR REFERENCIA
 type Dec  : Decimal(16, 2);
 
 // TIPO ESTRUCTURADO
-// TEst GIT HUB
 type Address {
     Street     : String;
     City       : String;
@@ -92,8 +93,8 @@ type Address {
 //         Fax     : String;
 // };
 
-entity Products {
-    key ID               : UUID;
+entity Products : cuid {
+    //key ID               : UUID;
         Name             : String not null; // RESTRICCIONES
         Description      : String;
         ImageUrl         : String;
@@ -137,9 +138,9 @@ entity Products {
 //Category         : Association to Categories;           // ASOCIACIÓN ADMIN
 };
 
-entity Suppliers {
-    key ID      : UUID;
-        Name    : Products : Name; // TIPOS POR REFERENCIA
+entity Suppliers : cuid  {
+    // key ID      : UUID;
+        Name    : Products:Name; // TIPOS POR REFERENCIA
         Address : Address;
         Email   : String;
         Phone   : String;
@@ -179,8 +180,8 @@ entity Months {
         ShortDescription : String(3);
 };
 
-entity ProductReview {
-    key ID         : UUID;
+entity ProductReview : cuid {
+    // key ID         : UUID;
         Product_Id : UUID;
         CreatedAt  : DateTime;
         Name       : String;
@@ -190,8 +191,8 @@ entity ProductReview {
                          on ToProduct.ID = Product_Id;
 };
 
-entity SalesData {
-    key ID               : UUID;
+entity SalesData : cuid {
+    // key ID               : UUID;
         DeliveryDate     : DateTime;
         Revenue          : Decimal(16, 2);
         Product_Id       : UUID;
@@ -205,22 +206,22 @@ entity SalesData {
                                on ToDeliveryMonth_.ID = DeliveryMonth_Id;
 };
 
-entity Orders {
-    key ID       : UUID;
+entity Orders : cuid {
+    // key ID       : UUID;
         Date     : Date;
         Customer : String;
         Item     : Composition of many OrdersItems
-                        on Item.Order = $self;
-        // Item     : Composition of many {
-        //                key Position : Integer;
-        //                    Order    : Association to Orders;
-        //                    Product  : Association to Products;
-        //                    Quantity : Integer;
-        //            }
+                       on Item.Order = $self;
+// Item     : Composition of many {
+//                key Position : Integer;
+//                    Order    : Association to Orders;
+//                    Product  : Association to Products;
+//                    Quantity : Integer;
+//            }
 };
 
-entity OrdersItems {
-    key ID       : UUID;
+entity OrdersItems : cuid{
+    // key ID       : UUID;
         Order    : Association to Orders;
         Product  : Association to Products;
         Quantity : Integer;
