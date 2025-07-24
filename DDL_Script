@@ -1,6 +1,10 @@
 
 CREATE TABLE com_logali_Products (
   ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP_TEXT,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP_TEXT,
+  modifiedBy NVARCHAR(255),
   Name NVARCHAR(255) NOT NULL,
   Description NVARCHAR(255),
   ImageUrl NVARCHAR(255),
@@ -92,8 +96,27 @@ CREATE TABLE com_logali_SalesData (
   PRIMARY KEY(ID)
 );
 
+CREATE TABLE com_logali_Orders (
+  ID NVARCHAR(36) NOT NULL,
+  Date DATE_TEXT,
+  Customer NVARCHAR(255),
+  PRIMARY KEY(ID)
+);
+
+CREATE TABLE com_logali_OrdersItems (
+  ID NVARCHAR(36) NOT NULL,
+  Order_ID NVARCHAR(36),
+  Product_ID NVARCHAR(36),
+  Quantity INTEGER,
+  PRIMARY KEY(ID)
+);
+
 CREATE VIEW com_logali_SelProducts AS SELECT
   Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
   Products_0.Name,
   Products_0.Description,
   Products_0.ImageUrl,
@@ -115,6 +138,10 @@ FROM com_logali_Products AS Products_0;
 
 CREATE VIEW com_logali_SelProducts1 AS SELECT
   Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
   Products_0.Name,
   Products_0.Description,
   Products_0.ImageUrl,
@@ -150,6 +177,10 @@ ORDER BY Rating;
 
 CREATE VIEW com_logali_ProjProducts AS SELECT
   Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
   Products_0.Name,
   Products_0.Description,
   Products_0.ImageUrl,
@@ -171,6 +202,10 @@ FROM com_logali_Products AS Products_0;
 
 CREATE VIEW com_logali_ProjProducts2 AS SELECT
   Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
   Products_0.Name,
   Products_0.Description,
   Products_0.ImageUrl,

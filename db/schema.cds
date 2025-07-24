@@ -1,6 +1,9 @@
 namespace com.logali;
 
-using {cuid} from '@sap/cds/common';
+using {
+    cuid,
+    managed
+} from '@sap/cds/common';
 
 // Definir tipo personalizado (No recomentado)
 type Name : String(50);
@@ -93,44 +96,44 @@ type Address {
 //         Fax     : String;
 // };
 
-entity Products : cuid {
+entity Products : cuid, managed {
     //key ID               : UUID;
-        Name             : String not null; // RESTRICCIONES
-        Description      : String;
-        ImageUrl         : String;
-        ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
-        // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
-        DiscontinuedDate : DateTime;
-        Price            : Dec;
-        Height           : type of Price; // TIPOS POR REFERENCIA
-        Width            : Decimal(16, 2);
-        Depth            : Decimal(16, 2);
-        Quantity         : Decimal(16, 2);
-        UnitOfMeasure_Id : String(2);
-        Currency_Id      : String(3);
-        Category_Id      : String(1);
-        Supplier_Id      : UUID;
-        DimensionUnit_Id : String(2);
-        ToSupplier       : Association to one Suppliers
-                               on ToSupplier.ID = Supplier_Id; // ASOCIACIÓN NO ADMIN
+    Name             : String not null; // RESTRICCIONES
+    Description      : String;
+    ImageUrl         : String;
+    ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
+    // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
+    DiscontinuedDate : DateTime;
+    Price            : Dec;
+    Height           : type of Price; // TIPOS POR REFERENCIA
+    Width            : Decimal(16, 2);
+    Depth            : Decimal(16, 2);
+    Quantity         : Decimal(16, 2);
+    UnitOfMeasure_Id : String(2);
+    Currency_Id      : String(3);
+    Category_Id      : String(1);
+    Supplier_Id      : UUID;
+    DimensionUnit_Id : String(2);
+    ToSupplier       : Association to one Suppliers
+                           on ToSupplier.ID = Supplier_Id; // ASOCIACIÓN NO ADMIN
 
-        ToUnitOfMeasure  : Association to UnitOfMeasures
-                               on ToUnitOfMeasure.ID = UnitOfMeasure_Id; // ASOCIACIÓN NO ADMIN
+    ToUnitOfMeasure  : Association to UnitOfMeasures
+                           on ToUnitOfMeasure.ID = UnitOfMeasure_Id; // ASOCIACIÓN NO ADMIN
 
-        ToCurrency       : Association to Currencies
-                               on ToCurrency.ID = Currency_Id;
+    ToCurrency       : Association to Currencies
+                           on ToCurrency.ID = Currency_Id;
 
-        ToDimensionUnit  : Association to DimensionUnits
-                               on ToDimensionUnit.ID = DimensionUnit_Id;
+    ToDimensionUnit  : Association to DimensionUnits
+                           on ToDimensionUnit.ID = DimensionUnit_Id;
 
-        ToCategory       : Association to Categories
-                               on ToCategory.ID = Category_Id;
+    ToCategory       : Association to Categories
+                           on ToCategory.ID = Category_Id;
 
-        SalesData        : Association to many SalesData
-                               on SalesData.ToProduct = $self; // ASOCIACIÓN MANY
+    SalesData        : Association to many SalesData
+                           on SalesData.ToProduct = $self; // ASOCIACIÓN MANY
 
-        Reviews          : Association to many ProductReview
-                               on Reviews.ToProduct = $self;
+    Reviews          : Association to many ProductReview
+                           on Reviews.ToProduct = $self;
 //Suppliers        : Association to Suppliers;            // ASOCIACIÓN ADMIN
 //UnitOfMeasures   : Association to UnitOfMeasures;       // ASOCIACIÓN ADMIN
 //Currency         : Association to Currencies;           // ASOCIACIÓN ADMIN
@@ -138,15 +141,15 @@ entity Products : cuid {
 //Category         : Association to Categories;           // ASOCIACIÓN ADMIN
 };
 
-entity Suppliers : cuid  {
+entity Suppliers : cuid, managed {
     // key ID      : UUID;
-        Name    : Products:Name; // TIPOS POR REFERENCIA
-        Address : Address;
-        Email   : String;
-        Phone   : String;
-        Fax     : String;
-        Product : Association to many Products
-                      on Product.ToSupplier = $self;
+    Name    : Products:Name; // TIPOS POR REFERENCIA
+    Address : Address;
+    Email   : String;
+    Phone   : String;
+    Fax     : String;
+    Product : Association to many Products
+                  on Product.ToSupplier = $self;
 };
 
 entity Categories {
@@ -180,38 +183,38 @@ entity Months {
         ShortDescription : String(3);
 };
 
-entity ProductReview : cuid {
+entity ProductReview : cuid, managed {
     // key ID         : UUID;
-        Product_Id : UUID;
-        CreatedAt  : DateTime;
-        Name       : String;
-        Rating     : Integer;
-        Comment    : String;
-        ToProduct  : Association to Products
-                         on ToProduct.ID = Product_Id;
+    Product_Id : UUID;
+    CreatedAt  : DateTime;
+    Name       : String;
+    Rating     : Integer;
+    Comment    : String;
+    ToProduct  : Association to Products
+                     on ToProduct.ID = Product_Id;
 };
 
 entity SalesData : cuid {
     // key ID               : UUID;
-        DeliveryDate     : DateTime;
-        Revenue          : Decimal(16, 2);
-        Product_Id       : UUID;
-        Currency_Id      : String(3);
-        DeliveryMonth_Id : String(2);
-        ToProduct        : Association to Products
-                               on ToProduct.ID = Product_Id;
-        ToCurrency       : Association to Currencies
-                               on ToCurrency.ID = Currency_Id;
-        ToDeliveryMonth_ : Association to Months
-                               on ToDeliveryMonth_.ID = DeliveryMonth_Id;
+    DeliveryDate     : DateTime;
+    Revenue          : Decimal(16, 2);
+    Product_Id       : UUID;
+    Currency_Id      : String(3);
+    DeliveryMonth_Id : String(2);
+    ToProduct        : Association to Products
+                           on ToProduct.ID = Product_Id;
+    ToCurrency       : Association to Currencies
+                           on ToCurrency.ID = Currency_Id;
+    ToDeliveryMonth_ : Association to Months
+                           on ToDeliveryMonth_.ID = DeliveryMonth_Id;
 };
 
 entity Orders : cuid {
     // key ID       : UUID;
-        Date     : Date;
-        Customer : String;
-        Item     : Composition of many OrdersItems
-                       on Item.Order = $self;
+    Date     : Date;
+    Customer : String;
+    Item     : Composition of many OrdersItems
+                   on Item.Order = $self;
 // Item     : Composition of many {
 //                key Position : Integer;
 //                    Order    : Association to Orders;
@@ -220,11 +223,11 @@ entity Orders : cuid {
 //            }
 };
 
-entity OrdersItems : cuid{
+entity OrdersItems : cuid {
     // key ID       : UUID;
-        Order    : Association to Orders;
-        Product  : Association to Products;
-        Quantity : Integer;
+    Order    : Association to Orders;
+    Product  : Association to Products;
+    Quantity : Integer;
 };
 
 // ENTIDAD SELECT
