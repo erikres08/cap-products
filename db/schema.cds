@@ -98,8 +98,8 @@ type Address {
 
 entity Products : cuid, managed {
     //key ID               : UUID;
-    Name             : String not null; // RESTRICCIONES
-    Description      : String;
+    Name             : localized String null; // RESTRICCIONES
+    Description      : localized String;
     ImageUrl         : String;
     ReleaseDate      : DateTime default $now; // VALORES PREDETERMINADOS
     // CreationDate     : DateTime default CURRENT_DATE;  -- VALORES PREDETERMINADOS
@@ -154,39 +154,39 @@ entity Suppliers : cuid, managed {
 
 entity Categories {
     key ID   : String(1);
-        Name : String;
+        Name : localized String;
 };
 
 entity StockAvailability {
     key ID          : Integer;
-        Description : String;
+        Description : localized String;
+        Product     : Association to Products;
 };
 
 entity Currencies {
     key ID          : String(3);
-        Description : String;
+        Description : localized String;
 };
 
 entity UnitOfMeasures {
     key ID          : String(2);
-        Description : String;
+        Description : localized String;
 };
 
 entity DimensionUnits {
     key ID          : String(2);
-        Description : String;
+        Description : localized String;
 };
 
 entity Months {
     key ID               : String(2);
-        Description      : String;
-        ShortDescription : String(3);
+        Description      : localized String;
+        ShortDescription : localized String(3);
 };
 
 entity ProductReview : cuid, managed {
     // key ID         : UUID;
     Product_Id : UUID;
-    CreatedAt  : DateTime;
     Name       : String;
     Rating     : Integer;
     Comment    : String;
