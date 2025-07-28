@@ -192,8 +192,8 @@ context sales {
                                on ToProduct.ID = Product_Id;
         ToCurrency       : Association to materials.Currencies
                                on ToCurrency.ID = Currency_Id;
-        ToDeliveryMonth_ : Association to Months
-                               on ToDeliveryMonth_.ID = DeliveryMonth_Id;
+        ToDeliveryMonth : Association to Months
+                               on ToDeliveryMonth.ID = DeliveryMonth_Id;
     };
 
 }
