@@ -20,12 +20,12 @@ define service CatalogService {
     entity Products          as
         select from logali.materials.Products {
             ID,
-            Name            as ProductName,
-            Description,
+            Name            as ProductName  @mandatory,
+            Description                     @mandatory,
             ImageUrl,
             ReleaseDate,
             DiscontinuedDate,
-            Price,
+            Price                           @mandatory,
             Height,
             Width,
             Depth,
@@ -35,16 +35,17 @@ define service CatalogService {
             Category_Id,
             DimensionUnit_Id,
             Supplier_Id,
-            ToUnitOfMeasure,
-            ToCurrency,
-            ToCategory,
-            ToCategory.Name as CategoryName,
+            ToUnitOfMeasure                 @mandatory,
+            ToCurrency                      @mandatory,
+            ToCategory                      @mandatory,
+            ToCategory.Name as CategoryName @readonly,
             ToDimensionUnit,
             ToSupplier,
             SalesData,
             Reviews
         };
 
+    @readonly
     entity Suppliers         as
         select from logali.sales.Suppliers {
             ID,
@@ -66,6 +67,7 @@ define service CatalogService {
             ToProduct
         };
 
+    @readonly
     entity SalesData         as
         select from logali.sales.SalesData {
             ID,
@@ -79,6 +81,7 @@ define service CatalogService {
             ToProduct
         };
 
+    @readonly
     entity StockAvailability as
         select from logali.materials.StockAvailability {
             ID,
@@ -87,24 +90,28 @@ define service CatalogService {
 
         };
 
+    @readonly
     entity VH_Categories     as
         select from logali.materials.Categories {
             ID   as Code,
             Name as Text
         };
 
+    @readonly
     entity VH_Currencies     as
         select from logali.materials.Currencies {
             ID          as Code,
             Description as Text
         };
 
+    @readonly
     entity VH_UnitOfMeasures as
         select from logali.materials.UnitOfMeasures {
             ID          as Code,
             Description as Text
         };
 
+    @readonly
     entity VH_DimensionUnits as
         select from logali.materials.DimensionUnits {
             ID          as Code,
