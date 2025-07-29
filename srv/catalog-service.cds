@@ -112,7 +112,7 @@ define service CatalogService {
             ID          as Code,
             Description as Text
         };
-        
+
     //PROJECTION CON POSTFIX
     @readonly
     entity VH_DimensionUnits as
@@ -120,5 +120,27 @@ define service CatalogService {
             ID          as Code,
             Description as Text
         from logali.materials.DimensionUnits;
+
+}
+
+define service MyService {
+
+    entity SuppliersProducts as
+        select from logali.materials.Products[Name = 'Bread']{
+            *,
+            Name,
+            Description,
+            ToSupplier.Address
+        }
+        where
+            ToSupplier.Address.PostalCode = 98074;
+
+    entity SuppliersToSales  as
+        select
+            ToSupplier.Email,
+            ToCategory.Name,
+            SalesData.Currency_Id,
+            SalesData.ToCurrency.Description
+        from logali.materials.Products
 
 }

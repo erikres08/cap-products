@@ -273,6 +273,37 @@ CREATE VIEW CatalogService_VH_DimensionUnits AS SELECT
   DimensionUnits_0.Description AS Text
 FROM com_logali_materials_DimensionUnits AS DimensionUnits_0;
 
+CREATE VIEW MyService_SuppliersProducts AS SELECT
+  Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
+  Products_0.Name,
+  Products_0.Description,
+  Products_0.ImageUrl,
+  Products_0.ReleaseDate,
+  Products_0.DiscontinuedDate,
+  Products_0.Price,
+  Products_0.Height,
+  Products_0.Width,
+  Products_0.Depth,
+  Products_0.Quantity,
+  Products_0.UnitOfMeasure_Id,
+  Products_0.Currency_Id,
+  Products_0.Category_Id,
+  Products_0.Supplier_Id,
+  Products_0.DimensionUnit_Id,
+  Products_0.PriceCondition,
+  Products_0.PriceDetermination,
+  ToSupplier_1.Address_Street,
+  ToSupplier_1.Address_City,
+  ToSupplier_1.Address_State,
+  ToSupplier_1.Address_PostalCode,
+  ToSupplier_1.Address_Country
+FROM (com_logali_materials_Products AS Products_0 LEFT JOIN com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id)
+WHERE (ToSupplier_1.Address_PostalCode = 98074) AND (Products_0.Name = 'Bread');
+
 CREATE VIEW com_logali_materials_SelProducts AS SELECT
   Products_0.ID,
   Products_0.createdAt,
@@ -393,6 +424,13 @@ CREATE VIEW com_logali_materials_ProjProducts3 AS SELECT
 FROM com_logali_materials_Products AS Products_0;
 
 CREATE VIEW CatalogService_Products_texts AS SELECT
+  texts_0.locale,
+  texts_0.ID,
+  texts_0.Name,
+  texts_0.Description
+FROM com_logali_materials_Products_texts AS texts_0;
+
+CREATE VIEW MyService_SuppliersProducts_texts AS SELECT
   texts_0.locale,
   texts_0.ID,
   texts_0.Name,
@@ -542,6 +580,37 @@ CREATE VIEW localized_CatalogService_VH_DimensionUnits AS SELECT
   DimensionUnits_0.ID AS Code,
   DimensionUnits_0.Description AS Text
 FROM localized_com_logali_materials_DimensionUnits AS DimensionUnits_0;
+
+CREATE VIEW localized_MyService_SuppliersProducts AS SELECT
+  Products_0.ID,
+  Products_0.createdAt,
+  Products_0.createdBy,
+  Products_0.modifiedAt,
+  Products_0.modifiedBy,
+  Products_0.Name,
+  Products_0.Description,
+  Products_0.ImageUrl,
+  Products_0.ReleaseDate,
+  Products_0.DiscontinuedDate,
+  Products_0.Price,
+  Products_0.Height,
+  Products_0.Width,
+  Products_0.Depth,
+  Products_0.Quantity,
+  Products_0.UnitOfMeasure_Id,
+  Products_0.Currency_Id,
+  Products_0.Category_Id,
+  Products_0.Supplier_Id,
+  Products_0.DimensionUnit_Id,
+  Products_0.PriceCondition,
+  Products_0.PriceDetermination,
+  ToSupplier_1.Address_Street,
+  ToSupplier_1.Address_City,
+  ToSupplier_1.Address_State,
+  ToSupplier_1.Address_PostalCode,
+  ToSupplier_1.Address_Country
+FROM (localized_com_logali_materials_Products AS Products_0 LEFT JOIN localized_com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id)
+WHERE (ToSupplier_1.Address_PostalCode = 98074) AND (Products_0.Name = 'Bread');
 
 CREATE VIEW localized_com_logali_materials_SelProducts AS SELECT
   Products_0.ID,
