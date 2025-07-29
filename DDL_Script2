@@ -304,6 +304,23 @@ CREATE VIEW MyService_SuppliersProducts AS SELECT
 FROM (com_logali_materials_Products AS Products_0 LEFT JOIN com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id)
 WHERE (ToSupplier_1.Address_PostalCode = 98074) AND (Products_0.Name = 'Bread');
 
+CREATE VIEW MyService_SuppliersToSales AS SELECT
+  ToSupplier_1.Email,
+  ToCategory_2.Name,
+  SalesData_3.Currency_Id,
+  ToCurrency_4.Description
+FROM ((((com_logali_materials_Products AS Products_0 LEFT JOIN com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id) LEFT JOIN com_logali_materials_Categories AS ToCategory_2 ON ToCategory_2.ID = Products_0.Category_Id) LEFT JOIN com_logali_sales_SalesData AS SalesData_3 ON (Products_0.ID = SalesData_3.Product_Id)) LEFT JOIN com_logali_materials_Currencies AS ToCurrency_4 ON ToCurrency_4.ID = SalesData_3.Currency_Id);
+
+CREATE VIEW MyService_EntityInfix AS SELECT
+  ToSupplier_1.Phone
+FROM (com_logali_materials_Products AS Products_0 LEFT JOIN com_logali_sales_Suppliers AS ToSupplier_1 ON (ToSupplier_1.ID = Products_0.Supplier_Id) AND (ToSupplier_1.Name = 'Exotic Liquids'))
+WHERE Products_0.Name = 'Bread';
+
+CREATE VIEW MyService_EntityJoin AS SELECT
+  Sup_1.Phone
+FROM (com_logali_materials_Products AS Pro_0 LEFT JOIN com_logali_sales_Suppliers AS Sup_1 ON Sup_1.ID = Pro_0.Supplier_Id AND Sup_1.Name = 'Exotic Liquids')
+WHERE Pro_0.Name = 'Bread';
+
 CREATE VIEW com_logali_materials_SelProducts AS SELECT
   Products_0.ID,
   Products_0.createdAt,
@@ -611,6 +628,13 @@ CREATE VIEW localized_MyService_SuppliersProducts AS SELECT
   ToSupplier_1.Address_Country
 FROM (localized_com_logali_materials_Products AS Products_0 LEFT JOIN localized_com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id)
 WHERE (ToSupplier_1.Address_PostalCode = 98074) AND (Products_0.Name = 'Bread');
+
+CREATE VIEW localized_MyService_SuppliersToSales AS SELECT
+  ToSupplier_1.Email,
+  ToCategory_2.Name,
+  SalesData_3.Currency_Id,
+  ToCurrency_4.Description
+FROM ((((localized_com_logali_materials_Products AS Products_0 LEFT JOIN localized_com_logali_sales_Suppliers AS ToSupplier_1 ON ToSupplier_1.ID = Products_0.Supplier_Id) LEFT JOIN localized_com_logali_materials_Categories AS ToCategory_2 ON ToCategory_2.ID = Products_0.Category_Id) LEFT JOIN com_logali_sales_SalesData AS SalesData_3 ON (Products_0.ID = SalesData_3.Product_Id)) LEFT JOIN localized_com_logali_materials_Currencies AS ToCurrency_4 ON ToCurrency_4.ID = SalesData_3.Currency_Id);
 
 CREATE VIEW localized_com_logali_materials_SelProducts AS SELECT
   Products_0.ID,

@@ -124,7 +124,7 @@ define service CatalogService {
 }
 
 define service MyService {
-
+    // EXPRESIÓN DE RUTA
     entity SuppliersProducts as
         select from logali.materials.Products[Name = 'Bread']{
             *,
@@ -141,6 +141,20 @@ define service MyService {
             ToCategory.Name,
             SalesData.Currency_Id,
             SalesData.ToCurrency.Description
-        from logali.materials.Products
+        from logali.materials.Products;
+
+    // FILTROS INFIX
+    entity EntityInfix       as
+        select ToSupplier[Name = 'Exotic Liquids'].Phone from logali.materials.Products
+        where
+            Products.Name = 'Bread';
+
+    entity EntityJoin        as
+        select Phone from logali.materials.Products as Pro
+        left join logali.sales.Suppliers as Sup
+            on  Sup.ID   = Pro.Supplier_Id
+            and Sup.Name = 'Exotic Liquids'
+        where
+            Pro.Name = 'Bread';
 
 }
