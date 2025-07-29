@@ -19,16 +19,18 @@ define service CatalogService {
 
     entity Products          as
         select from logali.materials.Products {
-            ID,
-            Name            as ProductName  @mandatory,
-            Description                     @mandatory,
-            ImageUrl,
-            ReleaseDate,
-            DiscontinuedDate,
-            Price                           @mandatory,
-            Height,
-            Width,
-            Depth,
+            // ID,
+            // Name            as ProductName  @mandatory,
+            // Description                     @mandatory,
+            // ImageUrl,
+            // ReleaseDate,
+            // DiscontinuedDate,
+            // Price                           @mandatory,
+            // Height,
+            // Width,
+            // Depth,
+            // SELECTOR INTELIGENTE
+            *,
             Quantity,
             UnitOfMeasure_Id,
             Currency_Id,
@@ -110,12 +112,13 @@ define service CatalogService {
             ID          as Code,
             Description as Text
         };
-
+        
+    //PROJECTION CON POSTFIX
     @readonly
     entity VH_DimensionUnits as
-        select from logali.materials.DimensionUnits {
+        select
             ID          as Code,
             Description as Text
-        };
+        from logali.materials.DimensionUnits;
 
 }
