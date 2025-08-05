@@ -24,6 +24,14 @@ entity StudentCourse {
         Course  : Association to Course;
 };
 
+entity Orders {
+    key ClientEmail : String(65);
+        FirstName   : String(30);
+        LastName    : String(30);
+        CreatedOn   : Date;
+        Reviewed    : Boolean;
+        Approved    : Boolean
+}
 // TIPO MATRIZ
 // type EmailAddresses_01 : array of {
 //     kind  : String;
@@ -182,4 +190,3 @@ entity ParamProducts2(pName : String) as
 entity ProjParamProducts(pName : String) as projection on Products
                                             where
                                                 Name = :pName;*/
-
