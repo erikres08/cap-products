@@ -192,8 +192,46 @@ context sales {
                                on ToProduct.ID = Product_Id;
         ToCurrency       : Association to materials.Currencies
                                on ToCurrency.ID = Currency_Id;
-        ToDeliveryMonth : Association to Months
+        ToDeliveryMonth  : Association to Months
                                on ToDeliveryMonth.ID = DeliveryMonth_Id;
     };
 
+}
+
+
+context reports {
+
+    // AGRUPACIONES
+    entity AverageRating as
+        select from logali.materials.ProductReview {
+            ToProduct.ID as ProductId,
+            avg(Rating)  as AverageRating : Decimal(16, 2)
+        }
+        group by
+            ToProduct.ID;
+
+    // MIXIN: Agregar Asociaciones no admin
+
+    entity Products      as
+        select from logali.materials.Products
+        mixin {
+            ToStockAvailability : Association to logali.materials.StockAvailability
+                                      on ToStockAvailability.ID = $projection.StockAvailability;
+            ToAverageRating     : Association to AverageRating
+                                      on ToAverageRating.ProductId = ID;
+        }
+
+        into {
+            *,
+            ToAverageRating.AverageRating as Rating,
+            case
+                when Quantity >= 8
+                     then 3
+                when Quantity > 0
+                     then 2
+                else 1
+            end                           as StockAvailability : Integer,
+            ToStockAvailability
+
+        }
 }
