@@ -181,4 +181,11 @@ define service Reports {
             Price as Price2 : Integer
         from logali.materials.Products;
 
+    entity EntityExist   as
+        select from logali.materials.Products {
+            Name
+        }
+        where
+            exists ToSupplier[ Name = 'Exotic Liquids' ];
+
 }
