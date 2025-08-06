@@ -52,4 +52,9 @@ module.exports = (srv) => {
         return returnData;
     });
 
+    // Modificar datos antes de la ejecución de la operación 
+    srv.before("CREATE", "CreateOrder", (req) => {
+        req.data.CreatedOn = new Date().toISOString().slice(0,10);
+        return req;
+    });
 };
