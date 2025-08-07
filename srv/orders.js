@@ -4,7 +4,7 @@ const { Orders } = cds.entities("com.training");
 module.exports = (srv) => {
 
     //**********READ********/
-    srv.on("READ", "GetOrders", async (req) => {
+    srv.on("READ", "Orders", async (req) => {
 
         if (req.data.ClientEmail !== undefined) {
             return await SELECT.from`com.training.Orders`.where`ClientEmail = ${req.data.ClientEmail}`;
@@ -13,12 +13,12 @@ module.exports = (srv) => {
     });
 
     // Modificar datos antes de la respuesta 
-    srv.after("READ", "GetOrders", (data) => {
+    srv.after("READ", "Orders", (data) => {
         return data.map((order) => (order.Reviewed = true));
     });
 
     //**********CREATE********/
-    srv.on("CREATE", "CreateOrder", async (req) => {
+    srv.on("CREATE", "Orders", async (req) => {
 
         let returnData = await cds
             .transaction(req)
@@ -33,8 +33,8 @@ module.exports = (srv) => {
                 })
             )
             .then((resolve, reject) => {
-                console.log("Resolve", resolve);
-                console.log("Reject", reject);
+                console.log("Resolve:", resolve);
+                console.log("Reject:", reject);
 
                 if (typeof resolve !== "undefined") {
                     return req.data;
@@ -48,13 +48,60 @@ module.exports = (srv) => {
                 console.log(err);
                 req.error(err.code, err.message);
             });
-        console.log("Before End", returnData );
+        console.log("Before End", returnData);
         return returnData;
     });
 
     // Modificar datos antes de la ejecución de la operación 
-    srv.before("CREATE", "CreateOrder", (req) => {
-        req.data.CreatedOn = new Date().toISOString().slice(0,10);
+    srv.before("CREATE", "Orders", (req) => {
+        req.data.CreatedOn = new Date().toISOString().slice(0, 10);
         return req;
+    });
+
+    //**********UPDATE********/
+    srv.on("UPDATE", "Orders", async (req) => {
+        let returnData = await cds.transaction(req).run(
+            [
+                UPDATE(Orders, req.data.ClientEmail).set({
+                    FirstName: req.data.FirstName,
+                    LastName: req.data.LastName
+                })
+            ]
+        ).then((resolve, reject) => {
+            console.log("Resolve:", resolve);
+            console.log("Reject:", reject);
+
+            if (resolve[0] == 0) {
+                req.error(409, "Record Not Found");
+            }
+        }).catch((err) => {
+            console.log(err);
+            req.error(err.code, err.message);
+        });
+        console.log("Before End", returnData);
+        return returnData;
+    });
+
+    //**********DELETE********/
+    srv.on("DELETE", "Orders", async (req) => {
+
+        let returnData = await cds.transaction(req).run(
+            DELETE.from(Orders).where({
+                ClientEmail: req.data.ClientEmail
+            })
+        ).then((resolve, reject) => {
+            console.log("Resolve:", resolve);
+            console.log("Reject:", reject);
+
+
+            if (resolve !== 1) {
+                req.error(409, "Record Not Found");
+            }
+        }).catch((err) => {
+            console.log(err);
+            req.error(err.code, err.message);
+        });
+        console.log("Before End", returnData);
+        return await returnData;
     });
 };
