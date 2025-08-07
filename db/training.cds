@@ -2,26 +2,26 @@ namespace com.training;
 
 using {
     cuid,
-    managed
+    Country
 } from '@sap/cds/common';
 
 // ASOCIACIÓN MANY TO MANY
-entity Course {
-    key ID      : UUID;
-        Student : Association to many StudentCourse
-                      on Student.Course = $self;
+entity Course : cuid {
+    // key ID      : UUID;
+    Student : Association to many StudentCourse
+                  on Student.Course = $self;
 };
 
-entity Student {
-    key ID     : UUID;
-        Course : Association to many StudentCourse
-                     on Course.Student = $self;
+entity Student : cuid {
+    // key ID     : UUID;
+    Course : Association to many StudentCourse
+                 on Course.Student = $self;
 };
 
-entity StudentCourse {
-    key ID      : UUID;
-        Student : Association to Student;
-        Course  : Association to Course;
+entity StudentCourse : cuid {
+    // key ID      : UUID;
+    Student : Association to Student;
+    Course  : Association to Course;
 };
 
 entity Orders {
@@ -30,7 +30,9 @@ entity Orders {
         LastName    : String(30);
         CreatedOn   : Date;
         Reviewed    : Boolean;
-        Approved    : Boolean
+        Approved    : Boolean;
+        Country     : Country;
+        Status      : String(1);
 }
 // TIPO MATRIZ
 // type EmailAddresses_01 : array of {
