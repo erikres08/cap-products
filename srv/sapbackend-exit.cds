@@ -6,7 +6,8 @@ define service SAPBackendExit {
         skip: false
     }
     @cds.autoexpose
-    entity Incidents as select from external.IncidentsSet;
+    // entity Incidents as select from external.IncidentsSet;
+    entity Incidents as projection on external.IncidentsSet;
 // entity Incidents as
 // select from external.IncidentsSet {
 //     IncidenceId,
