@@ -10,4 +10,9 @@ cds.on("bootstrap", (app) => {
     });
 });
 
-//module.exports = cds.server;
+
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
+module.exports = cds.server;

@@ -16,3 +16,10 @@ define service SAPBackendExit {
 // };
 
 }
+
+@protocol : 'rest'
+service RestService {
+
+    entity Incidents as projection on SAPBackendExit.Incidents;
+
+}
