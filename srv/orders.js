@@ -115,7 +115,7 @@ module.exports = (srv) => {
     srv.on("getClientTaxRate", async (req) => {
         // No server side-effect
         const { clientEmail } = req.data;
-        const db = srv.transaction(req);
+        const db = cds.transaction(req);
 
         const results = await db
             .read(Orders, ["Country_code"])
@@ -136,7 +136,7 @@ module.exports = (srv) => {
     //**********ACTION********/
     srv.on("cancelOrder", async (req) => {
         const { clientEmail } = req.data;
-        const db = srv.transaction(req);
+        const db = cds.transaction(req);
 
         const resultsRead = await db
             .read(Orders, ["FirstName", "LastName", "Approved"])
