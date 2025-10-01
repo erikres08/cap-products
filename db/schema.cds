@@ -87,7 +87,6 @@ context materials {
     };
 
     // ENTIDAD SELECT
-    // Test Commit
     entity SelProducts   as select from Products;
 
     entity SelProducts1  as
